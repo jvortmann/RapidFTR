@@ -18,13 +18,23 @@
 
 		self.selectedField = "";
 
-		var populateUserCriteria = function(userDetailsCriteria) {
-			if (userDetailsCriteria.length == 0) return;
+    var populateUserCriteria = function(userDetailsCriteria) {
+      if (userDetailsCriteria.length == 0) return;
 
-			$('#created_by').attr('checked','checked');
-			enableInputByCheckbox($('#created_by'), $('#created_by_value'));
-			$('#created_by_value').val(userDetailsCriteria[0].value);
-		};
+      populateField(userDetailsCriteria, 'created_by');
+      populateField(userDetailsCriteria, 'updated_by');
+    };
+
+    var populateField = function(userDetailsCriteria, fieldName) {
+      var matchingFields = $.grep(userDetailsCriteria, function(a) {return a.field === fieldName});
+      if (matchingFields.length == 0) return;
+
+      toPopulate = matchingFields[0];
+
+      $('#' + toPopulate.field).attr('checked','checked');
+      enableInputByCheckbox($('#' + toPopulate.field), $('#' + toPopulate.field + '_value'));
+      $('#' + toPopulate.field + '_value').val(toPopulate.value);
+    };
 
 		var buildCriteria = function(condition) {
 			var criteria = $("#criteria_template").tmpl(condition);
@@ -107,17 +117,28 @@
         }
 
         $('#created_by').bind('click', function() {
-            enableInputByCheckbox($(this), $('#created_by_value'));
+          enableInputByCheckbox($(this), $('#created_by_value'));
+        });
+
+        $('#updated_by').bind('click', function() {
+          enableInputByCheckbox($(this), $('#updated_by_value'));
         });
 
         var createdByIsValid = function() {
             return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');
+        };
+
+        var updatedByIsValid = function() {
+            return ($('#updated_by').is(':checked')) && ($('#updated_by_value').val() != '');
         }
 
 		var validate = function(){
 			var result = "";
 
             if (createdByIsValid()) {
+                return result;
+            }
+            if (updatedByIsValid()) {
                 return result;
             }
 			$('.criteria-list .criteria-field').each(function(){

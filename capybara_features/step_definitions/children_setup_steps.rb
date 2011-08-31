@@ -14,6 +14,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     child = Child.new_with_user_name(child_hash['created_by'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    child.set_updated_fields_for(child_hash['updated_by']) unless child_hash['updated_by'].nil?
     child.create!
   end
 end

@@ -20,6 +20,23 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And the "created_by_value" field should have "aidWorker"
 
   @javascript
+  Scenario: Searching for children by the user who updated the child record
+    Given the following children exist in the system:
+      | name   | updated_by |
+      | Willis | aidWorker  |
+      | Will   | volunteer  |
+
+    And I am logged in
+    And I am on child advanced search page
+
+    When I check "updated_by"
+    And I fill in "aidWorker" for "updated_by_value"
+    And I press "Search"
+
+    And I should see "Willis" in the search results
+    And the "updated_by_value" field should have "aidWorker"
+
+  @javascript
   Scenario: Searching for children by the child name field
     Given the following children exist in the system:
       | name   | created_by |

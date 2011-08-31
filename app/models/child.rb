@@ -48,7 +48,7 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_fields_for_solar
-    ["unique_identifier", "created_by"] +  Field.all_text_names
+    ["unique_identifier", "created_by", "updated_by"] +  Field.all_text_names
   end
 
   def validate_has_at_least_one_field_value
